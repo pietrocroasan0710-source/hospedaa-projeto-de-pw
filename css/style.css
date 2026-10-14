@@ -255,3 +255,238 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
   .layout { grid-template-columns: 1fr; }
   .filtros { position: static; }
 }
+
+
+/* ==========================================================
+   ANIMAÇÕES E FILTROS EXTRAS (v2)
+   ========================================================== */
+
+/* ---------- Keyframes ---------- */
+@keyframes subir     { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes aparecer  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop       { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
+@keyframes pulsar    { 0% { transform: scale(1); } 50% { transform: scale(1.08); color: var(--cor-primaria); } 100% { transform: scale(1); } }
+@keyframes brilho    { to { transform: translateX(100%); } }
+@keyframes chipEntra { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+@keyframes ondulacao { to { transform: scale(2.6); opacity: 0; } }
+@keyframes tremer {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+
+/* ---------- Página aparece suavemente ---------- */
+body { animation: aparecer .6s ease; }
+
+/* ---------- Entrada do conteúdo do hero ---------- */
+.hero-conteudo h1   { animation: subir .9s .15s ease backwards; }
+.hero-conteudo > p  { animation: subir .9s .35s ease backwards; }
+.busca              { animation: subir .9s .55s ease backwards; }
+
+/* ---------- Navbar: encolhe ao rolar + sublinhado animado ---------- */
+.navbar { transition: padding .3s, box-shadow .3s, background .3s; }
+.navbar.rolou {
+  padding-top: 8px; padding-bottom: 8px;
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, .1);
+}
+.navbar nav a:not(.btn-entrar) { position: relative; }
+.navbar nav a:not(.btn-entrar)::after {
+  content: ''; position: absolute; left: 0; bottom: -4px;
+  width: 0; height: 2px; background: var(--cor-primaria);
+  transition: width .3s ease;
+}
+.navbar nav a:not(.btn-entrar):hover::after,
+.navbar nav a.ativo::after { width: 100%; }
+
+/* ---------- Aparecer ao rolar (.reveal) ---------- */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .7s ease, transform .7s ease;
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal.visivel { opacity: 1; transform: none; }
+
+/* ---------- Cards de hotel (nova estrutura) ---------- */
+.card-hotel { position: relative; }
+.card-link  { display: block; color: inherit; }
+.card-img {
+  overflow: hidden;
+  background-image: linear-gradient(135deg, #cfe6ee, #f1e6d3); /* se a foto falhar */
+}
+.card-foto {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: transform .7s ease;
+}
+.card-hotel:hover .card-foto { transform: scale(1.1); }
+.nota { z-index: 2; }
+
+.tipo-tag {
+  position: absolute; left: 12px; bottom: 12px; z-index: 2;
+  background: rgba(255, 255, 255, .92); color: var(--cor-texto);
+  padding: 3px 10px; border-radius: 999px; font-size: .78rem; font-weight: 600;
+}
+.estrelas { color: var(--cor-destaque); font-size: .85rem; letter-spacing: 2px; margin-bottom: 2px; }
+.selos { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.selo { background: #e8f7ee; color: #1f7a45; font-size: .75rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+
+/* entrada dos cards na página de hotéis (só os que acabaram de aparecer) */
+.card-hotel.entrada {
+  animation: subir .5s ease backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* ---------- Coração de favorito ---------- */
+.btn-fav {
+  position: absolute; top: 12px; left: 12px; z-index: 5;
+  width: 36px; height: 36px; border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .92); color: #8a99a6;
+  font-size: 1.2rem; line-height: 1; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+  transition: transform .2s, color .2s;
+}
+.btn-fav:hover { transform: scale(1.12); color: #e64a6b; }
+.btn-fav.ativo { color: #e64a6b; }
+.btn-fav.pop   { animation: pop .4s ease; }
+
+/* ---------- Esqueleto (carregando) ---------- */
+.esqueleto {
+  position: relative; overflow: hidden; height: 360px;
+  border-radius: var(--raio); box-shadow: var(--sombra);
+  background: linear-gradient(#e3ecf1 180px, #ffffff 180px);
+}
+.esqueleto::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .75), transparent);
+  transform: translateX(-100%);
+  animation: brilho 1.4s infinite;
+}
+
+/* ---------- Botões: onda ao clicar ---------- */
+.btn-buscar, .btn-entrar, .btn-limpar, .btn-ver-todos { position: relative; overflow: hidden; }
+.ripple {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  background: rgba(255, 255, 255, .5);
+  transform: scale(0); animation: ondulacao .6s ease-out forwards;
+}
+.btn-limpar .ripple { background: rgba(14, 138, 154, .25); }
+
+.ver-todos { text-align: center; margin-top: 40px; }
+.btn-ver-todos {
+  display: inline-block; padding: 13px 34px; border-radius: 999px;
+  background: var(--cor-primaria); color: var(--branco); font-weight: 600;
+  transition: background .2s, transform .2s, box-shadow .2s;
+}
+.btn-ver-todos:hover { background: var(--cor-primaria-escura); transform: translateY(-2px); box-shadow: var(--sombra); }
+
+/* ---------- Formulário: campo inválido + tremida ---------- */
+.campo input.invalido { border-color: #d64545; box-shadow: 0 0 0 3px rgba(214, 69, 69, .15); }
+.busca.tremer { animation: tremer .45s; }
+
+/* ---------- Botão voltar ao topo ---------- */
+.btn-topo {
+  position: fixed; right: 22px; bottom: 22px; z-index: 90;
+  width: 46px; height: 46px; border: 0; border-radius: 50%;
+  background: var(--cor-primaria); color: var(--branco);
+  font-size: 1.3rem; cursor: pointer; box-shadow: var(--sombra);
+  opacity: 0; transform: translateY(20px); pointer-events: none;
+  transition: opacity .3s, transform .3s, background .2s;
+}
+.btn-topo.visivel { opacity: 1; transform: none; pointer-events: auto; }
+.btn-topo:hover { background: var(--cor-primaria-escura); }
+
+/* ==========================================================
+   FILTROS NOVOS (hoteis.html)
+   ========================================================== */
+
+/* painel rolável quando tem muita coisa */
+.filtros { max-height: calc(100vh - 110px); overflow-y: auto; }
+
+/* pills de estrelas */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pills label { position: relative; cursor: pointer; }
+.pills input { position: absolute; opacity: 0; pointer-events: none; }
+.pills span {
+  display: inline-block; padding: 7px 14px; border-radius: 999px;
+  border: 1.5px solid #dbe5ec; font-size: .88rem; font-weight: 500;
+  transition: background .2s, color .2s, border-color .2s, transform .15s;
+}
+.pills label:hover span { border-color: var(--cor-primaria); }
+.pills input:checked + span {
+  background: var(--cor-primaria); border-color: var(--cor-primaria);
+  color: var(--branco); transform: scale(1.05);
+}
+.pills input:focus-visible + span { outline: 2px solid var(--cor-destaque); outline-offset: 2px; }
+
+/* interruptores (liga/desliga) */
+.interruptores { display: flex; flex-direction: column; gap: 12px; }
+.interruptor { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: .95rem; }
+.interruptor input { position: absolute; opacity: 0; pointer-events: none; }
+.trilho {
+  position: relative; flex-shrink: 0; width: 42px; height: 24px;
+  border-radius: 999px; background: #cfdbe3; transition: background .25s;
+}
+.trilho::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%; background: var(--branco);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .25); transition: transform .25s;
+}
+.interruptor input:checked + .trilho { background: var(--cor-primaria); }
+.interruptor input:checked + .trilho::after { transform: translateX(18px); }
+.interruptor input:focus-visible + .trilho { outline: 2px solid var(--cor-destaque); outline-offset: 2px; }
+
+/* chips dos filtros ativos */
+.filtros-ativos { display: flex; flex-wrap: wrap; gap: 8px; }
+.filtros-ativos:not(:empty) { margin-bottom: 16px; }
+.chip-ativo {
+  border: 0; background: #eaf5f7; color: var(--cor-primaria-escura);
+  padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 500;
+  cursor: pointer; animation: chipEntra .25s ease;
+  transition: background .2s, color .2s;
+}
+.chip-ativo:hover { background: var(--cor-primaria); color: var(--branco); }
+.chip-ativo.limpar-tudo { background: transparent; color: var(--cor-texto-suave); text-decoration: underline; }
+.chip-ativo.limpar-tudo:hover { background: transparent; color: var(--cor-primaria); }
+
+/* contador pulsa quando muda */
+#contador { transform-origin: left center; }
+#contador.pulsar { animation: pulsar .4s ease; }
+
+/* botão de filtros do celular */
+.btn-filtros-mobile {
+  display: none; width: 100%; padding: 12px; margin-bottom: 14px;
+  border: 1.5px solid var(--cor-primaria); border-radius: 12px;
+  background: var(--branco); color: var(--cor-primaria);
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+}
+.badge-filtros {
+  display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px;
+  background: var(--cor-destaque); color: var(--branco); font-size: .8rem;
+}
+.badge-filtros:empty { display: none; }
+
+@media (max-width: 860px) {
+  .btn-filtros-mobile { display: block; }
+  /* painel desliza para abrir/fechar */
+  .filtros {
+    max-height: 0; padding-top: 0; padding-bottom: 0;
+    overflow: hidden; opacity: 0; box-shadow: none;
+    transition: max-height .45s ease, padding .45s ease, opacity .3s ease;
+  }
+  .filtros.aberto {
+    max-height: 1700px; padding: 22px; opacity: 1;
+    overflow-y: auto; box-shadow: var(--sombra);
+  }
+}
+
+/* ---------- Respeita quem pediu menos movimento no sistema ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}

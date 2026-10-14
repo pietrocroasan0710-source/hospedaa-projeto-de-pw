@@ -8,50 +8,66 @@
   ],
   "hoteis": [
     {
-      "id": 1, "nome": "Resort Mar Azul", "cidade": "Porto de Galinhas", "estado": "PE",
+      "id": 1, "nome": "Resort Mar Azul", "tipo": "Resort", "estrelas": 5,
+      "cidade": "Porto de Galinhas", "estado": "PE",
       "preco": 589.90, "nota": 4.8, "capacidade": 5,
+      "cancelamentoGratis": true, "pets": false,
       "imagem": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Piscina", "Café da manhã"]
     },
     {
-      "id": 2, "nome": "Pousada Serra Verde", "cidade": "Campos do Jordão", "estado": "SP",
+      "id": 2, "nome": "Pousada Serra Verde", "tipo": "Pousada", "estrelas": 3,
+      "cidade": "Campos do Jordão", "estado": "SP",
       "preco": 349.00, "nota": 4.6, "capacidade": 4,
+      "cancelamentoGratis": true, "pets": true,
       "imagem": "https://images.unsplash.com/photo-1542314831-068cd1dbfeed?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Lareira", "Estacionamento"]
     },
     {
-      "id": 3, "nome": "Hotel Central Plaza", "cidade": "São Paulo", "estado": "SP",
+      "id": 3, "nome": "Hotel Central Plaza", "tipo": "Hotel", "estrelas": 4,
+      "cidade": "São Paulo", "estado": "SP",
       "preco": 279.50, "nota": 4.3, "capacidade": 3,
+      "cancelamentoGratis": true, "pets": false,
       "imagem": "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Academia", "Café da manhã"]
     },
     {
-      "id": 4, "nome": "Lodge Floresta Viva", "cidade": "Gramado", "estado": "RS",
+      "id": 4, "nome": "Lodge Floresta Viva", "tipo": "Lodge", "estrelas": 5,
+      "cidade": "Gramado", "estado": "RS",
       "preco": 459.00, "nota": 4.9, "capacidade": 4,
+      "cancelamentoGratis": false, "pets": true,
       "imagem": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Spa", "Restaurante"]
     },
     {
-      "id": 5, "nome": "Hotel Orla Copacabana", "cidade": "Rio de Janeiro", "estado": "RJ",
+      "id": 5, "nome": "Hotel Orla Copacabana", "tipo": "Hotel", "estrelas": 5,
+      "cidade": "Rio de Janeiro", "estado": "RJ",
       "preco": 720.00, "nota": 4.7, "capacidade": 4,
+      "cancelamentoGratis": false, "pets": false,
       "imagem": "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Piscina", "Restaurante", "Academia"]
     },
     {
-      "id": 6, "nome": "Pousada Recanto das Palmeiras", "cidade": "Jericoacoara", "estado": "CE",
+      "id": 6, "nome": "Pousada Recanto das Palmeiras", "tipo": "Pousada", "estrelas": 3,
+      "cidade": "Jericoacoara", "estado": "CE",
       "preco": 310.00, "nota": 4.4, "capacidade": 3,
+      "cancelamentoGratis": true, "pets": true,
       "imagem": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Piscina", "Café da manhã"]
     },
     {
-      "id": 7, "nome": "Hotel Vale dos Pinhais", "cidade": "Curitiba", "estado": "PR",
+      "id": 7, "nome": "Hotel Vale dos Pinhais", "tipo": "Hotel", "estrelas": 3,
+      "cidade": "Curitiba", "estado": "PR",
       "preco": 235.00, "nota": 4.1, "capacidade": 2,
+      "cancelamentoGratis": true, "pets": false,
       "imagem": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Estacionamento", "Café da manhã"]
     },
     {
-      "id": 8, "nome": "Grand Hotel Lagoa", "cidade": "Florianópolis", "estado": "SC",
+      "id": 8, "nome": "Grand Hotel Lagoa", "tipo": "Hotel", "estrelas": 4,
+      "cidade": "Florianópolis", "estado": "SC",
       "preco": 498.00, "nota": 4.5, "capacidade": 5,
+      "cancelamentoGratis": false, "pets": true,
       "imagem": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80",
       "comodidades": ["Wi-Fi", "Piscina", "Spa", "Restaurante"]
     }

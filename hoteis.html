@@ -33,8 +33,13 @@
 
     <div class="layout">
 
+      <!-- botão que abre os filtros no celular -->
+      <button type="button" class="btn-filtros-mobile" id="btnFiltros">
+        ⚙️ Filtros <span class="badge-filtros" id="badgeFiltros"></span>
+      </button>
+
       <!-- ========== FILTROS ========== -->
-      <aside class="filtros">
+      <aside class="filtros" id="painelFiltros">
         <h2>Filtros</h2>
 
         <div class="filtro">
@@ -43,8 +48,30 @@
         </div>
 
         <div class="filtro">
+          <label for="filtroEstado">Estado</label>
+          <select id="filtroEstado">
+            <option value="">Todos os estados</option>
+          </select>
+        </div>
+
+        <div class="filtro">
           <label for="filtroPreco">Preço máximo por noite: <strong id="valorPreco"></strong></label>
           <input type="range" id="filtroPreco" step="10">
+        </div>
+
+        <div class="filtro">
+          <label>Tipo de hospedagem</label>
+          <div id="filtroTipos" class="lista-checks"></div>
+        </div>
+
+        <div class="filtro">
+          <label>Categoria (estrelas)</label>
+          <div class="pills">
+            <label><input type="radio" name="estrelas" value="0" checked><span>Todas</span></label>
+            <label><input type="radio" name="estrelas" value="3"><span>3★+</span></label>
+            <label><input type="radio" name="estrelas" value="4"><span>4★+</span></label>
+            <label><input type="radio" name="estrelas" value="5"><span>5★</span></label>
+          </div>
         </div>
 
         <div class="filtro">
@@ -62,11 +89,22 @@
           <div id="filtroComodidades" class="lista-checks"></div>
         </div>
 
+        <div class="filtro">
+          <label>Preferências</label>
+          <div class="interruptores">
+            <label class="interruptor"><input type="checkbox" id="fCancel"><span class="trilho"></span>Cancelamento grátis</label>
+            <label class="interruptor"><input type="checkbox" id="fPets"><span class="trilho"></span>Aceita pets</label>
+            <label class="interruptor"><input type="checkbox" id="fFav"><span class="trilho"></span>Só favoritos ♥</label>
+          </div>
+        </div>
+
         <button type="button" id="limparFiltros" class="btn-limpar">Limpar filtros</button>
       </aside>
 
       <!-- ========== RESULTADOS ========== -->
       <section class="resultados">
+        <div class="filtros-ativos" id="filtrosAtivos"></div>
+
         <div class="barra-resultados">
           <p id="contador">Carregando...</p>
           <div class="ordenar">
@@ -91,6 +129,8 @@
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/animacoes.js"></script>
   <script src="js/hoteis.js"></script>
 </body>
 </html>
