@@ -1,0 +1,57 @@
+/* Telas de autenticação do Hospedaê */
+.auth-page { min-height: 100vh; background: #f6fafc; }
+.auth-navbar { position: absolute; background: rgba(255,255,255,.92); }
+.auth-voltar { color: #0a6c79; font-weight: 650; font-size: .92rem; }
+.auth-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, .95fr) minmax(420px, 1.05fr); padding-top: 66px; }
+.auth-art { position: relative; display: flex; align-items: flex-end; min-height: calc(100vh - 66px); overflow: hidden; color: white; background: #164f5b url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=85') center/cover no-repeat; }
+.auth-art::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,41,50,.08), rgba(7,41,50,.84)); }
+.auth-art-overlay { position: absolute; inset: 0; background: linear-gradient(110deg, rgba(8,74,83,.16), transparent 70%); }
+.auth-art-copy { position: relative; z-index: 1; padding: clamp(34px, 5vw, 76px); max-width: 690px; text-shadow: 0 2px 16px rgba(0,0,0,.2); }
+.auth-eyebrow, .auth-kicker { font-size: .72rem; letter-spacing: .16em; font-weight: 800; }
+.auth-eyebrow { display: inline-block; margin-bottom: 20px; color: #b9f2eb; }
+.auth-art-copy h1 { font-size: clamp(2.25rem, 4vw, 4rem); line-height: 1.07; letter-spacing: -.045em; margin-bottom: 20px; }
+.auth-art-copy p { max-width: 420px; font-size: 1.08rem; line-height: 1.7; color: rgba(255,255,255,.9); }
+.auth-points { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 28px; font-size: .86rem; font-weight: 650; }
+.auth-photo-caption { position: absolute; right: 24px; bottom: 22px; z-index: 1; font-size: .82rem; color: rgba(255,255,255,.85); }
+.auth-panel { display: flex; justify-content: center; align-items: center; padding: 42px clamp(24px, 5vw, 78px); }
+.auth-card { width: 100%; max-width: 440px; }
+.auth-mini-logo { display: none; align-items: center; gap: 8px; color: #0e8a9a; font-size: 1.15rem; font-weight: 800; margin-bottom: 28px; }
+.auth-heading { margin-bottom: 28px; }
+.auth-kicker { color: #0e8a9a; display: block; margin-bottom: 10px; }
+.auth-heading h2 { font-size: clamp(1.85rem, 3vw, 2.35rem); letter-spacing: -.04em; line-height: 1.15; color: #19333e; margin-bottom: 10px; }
+.auth-heading p { color: #71818b; line-height: 1.65; }
+.auth-form { display: grid; gap: 19px; }
+.auth-field { display: flex; flex-direction: column; gap: 8px; }
+.auth-field label { color: #263e48; font-size: .88rem; font-weight: 700; }
+.auth-field input { width: 100%; min-height: 50px; padding: 13px 14px; border: 1px solid #d9e4e8; border-radius: 11px; background: white; color: #22313f; font: inherit; outline: none; transition: border-color .2s, box-shadow .2s; }
+.auth-field input:focus { border-color: #0e8a9a; box-shadow: 0 0 0 4px rgba(14,138,154,.12); }
+.auth-field input::placeholder { color: #a0adb4; }
+.field-label-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.field-label-row a, .terms-row a { color: #0a7e8c; font-weight: 700; font-size: .82rem; }
+.password-wrap { position: relative; display: flex; align-items: center; }
+.password-wrap input { padding-right: 82px; }
+.toggle-password { position: absolute; right: 11px; border: 0; background: transparent; color: #0a7e8c; font-size: .8rem; font-weight: 750; cursor: pointer; padding: 7px; }
+.field-help { color: #7c8b93; font-size: .78rem; margin-top: -2px; }
+.remember-row { display: flex; align-items: flex-start; gap: 9px; color: #657680; font-size: .83rem; line-height: 1.5; cursor: pointer; }
+.remember-row input { accent-color: #0e8a9a; width: 16px; height: 16px; margin-top: 2px; flex: 0 0 auto; }
+.terms-row { margin-top: -2px; }
+.auth-submit { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 52px; border: 0; border-radius: 11px; background: #0e8a9a; color: white; font: inherit; font-weight: 800; cursor: pointer; box-shadow: 0 9px 20px rgba(14,138,154,.2); transition: transform .2s, background .2s, box-shadow .2s; }
+.auth-submit span { font-size: 1.2rem; transition: transform .2s; }
+.auth-submit:hover { background: #0a6c79; transform: translateY(-1px); box-shadow: 0 12px 25px rgba(14,138,154,.25); }
+.auth-submit:hover span { transform: translateX(3px); }
+.auth-switch { text-align: center; margin-top: 24px; color: #71818b; font-size: .9rem; }
+.auth-switch a { color: #0a7e8c; font-weight: 800; margin-left: 4px; }
+.auth-divider { display: flex; align-items: center; gap: 14px; margin: 25px 0 13px; color: #9ba8ae; font-size: .68rem; font-weight: 800; letter-spacing: .13em; }
+.auth-divider::before, .auth-divider::after { content: ''; height: 1px; background: #e1e9ec; flex: 1; }
+.auth-note, .auth-legal { text-align: center; color: #8a989f; font-size: .77rem; line-height: 1.6; }
+.auth-legal { margin-top: 24px; }
+.flash-list { display: grid; gap: 8px; margin-bottom: 20px; }
+.flash { border-radius: 10px; padding: 12px 14px; font-size: .88rem; line-height: 1.5; }
+.flash-erro { color: #923c35; background: #fff0ed; border: 1px solid #f5d2cd; }
+.flash-sucesso { color: #226747; background: #eaf8ef; border: 1px solid #c9ecd5; }
+.flash-aviso { color: #785719; background: #fff8e6; border: 1px solid #f2e3b6; }
+.nav-user { color: #0a6c79; font-weight: 700; font-size: .9rem; }
+.nav-logout { display: inline-flex; margin: 0; }
+.nav-logout .btn-entrar { border: 0; cursor: pointer; font: inherit; }
+@media (max-width: 900px) { .auth-shell { grid-template-columns: .8fr 1.2fr; } .auth-art-copy { padding: 34px; } .auth-points { display: grid; gap: 8px; } .auth-panel { padding: 34px 26px; } }
+@media (max-width: 680px) { .auth-shell { display: block; padding-top: 66px; } .auth-art { min-height: 210px; align-items: center; } .auth-art-copy { padding: 28px 24px; } .auth-art-copy h1 { font-size: 1.8rem; margin-bottom: 8px; } .auth-art-copy p, .auth-points, .auth-photo-caption { display: none; } .auth-eyebrow { margin-bottom: 10px; font-size: .63rem; } .auth-panel { padding: 32px 22px 42px; } .auth-mini-logo { display: flex; } .auth-heading { margin-bottom: 22px; } .auth-navbar { padding: 12px 5%; } .auth-voltar { font-size: .8rem; } }

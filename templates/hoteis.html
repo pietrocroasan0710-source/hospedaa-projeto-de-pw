@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hotéis | Hospedaê</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="pagina-interna">
 
-  <!-- ========== NAVBAR (navbar = a barra de menu lá de cima, igualzinha à da home pra ninguém estranhar) ========== -->
+  <!-- ========== NAVBAR (navbar = a barra de menu lá de cima, igualzinha à da home nos sites) ========== -->
   <header class="navbar">
-    <a href="index.html" class="logo">🏨 Hospedaê</a>
+    <a href="{{ url_for('home') }}" class="logo">🏨 Hospedaê</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     <nav id="menu">
-      <a href="index.html">Início</a>
-      <a href="hoteis.html" class="ativo">Hotéis</a>
-      <a href="index.html#destinos">Destinos</a>
-      <a href="index.html#como-funciona">Como funciona</a>
-      <a href="reservas.html">Minhas reservas</a>
-      <a href="login.html" class="btn-entrar">Entrar</a>
+      <a href="{{ url_for('home') }}">Início</a>
+      <a href="{{ url_for('hoteis') }}" class="ativo">Hotéis</a>
+      <a href="{{ url_for('home') }}#destinos">Destinos</a>
+      <a href="{{ url_for('home') }}#como-funciona">Como funciona</a>
+      <a href="{{ url_for('reservas') }}">Minhas reservas</a>
+      {% if usuario_logado %}<span class="nav-user">Olá, {{ nome_usuario.split()[0] }}</span><form class="nav-logout" action="{{ url_for('sair') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit" class="btn-entrar">Sair</button></form>{% else %}<a href="{{ url_for('login') }}" class="btn-entrar">Entrar</a>{% endif %}
     </nav>
   </header>
 
@@ -28,7 +28,7 @@
     <section class="resumo-busca">
       <h1>Hotéis disponíveis</h1>
       <div class="chips" id="chipsBusca"></div>
-      <a href="index.html" class="link-alterar">← Alterar busca</a>
+      <a href="{{ url_for('home') }}" class="link-alterar">← Alterar busca</a>
     </section>
 
     <div class="layout">
@@ -131,8 +131,8 @@
 
   <!-- ========== SCRIPTS (aqui que o bicho pega! a ordem importa: o jQuery vem primeiro, senão o resto não funciona) ========== -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="js/cards.js"></script>
-  <script src="js/animacoes.js"></script>
-  <script src="js/hoteis.js"></script>
+  <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/animacoes.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/hoteis.js') }}"></script>
 </body>
 </html>

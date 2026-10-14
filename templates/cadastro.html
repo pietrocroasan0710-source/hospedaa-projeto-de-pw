@@ -1,0 +1,15 @@
+{% extends 'base_auth.html' %}
+{% block title %}Criar conta | Hospedaê{% endblock %}
+{% block form_content %}
+<div class="auth-heading"><span class="auth-kicker">VAMOS COMEÇAR?</span><h2>Crie sua conta</h2><p>Cadastre-se para deixar sua próxima viagem ainda mais fácil.</p></div>
+<form class="auth-form" method="post" data-validate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="auth-field"><label for="nome">Nome completo</label><input id="nome" name="nome" type="text" placeholder="Como podemos te chamar?" autocomplete="name" minlength="2" maxlength="80" required value="{{ request.form.get('nome', '') }}"></div>
+  <div class="auth-field"><label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" maxlength="254" required value="{{ request.form.get('email', '') }}"></div>
+  <div class="auth-field"><label for="senha">Crie uma senha</label><div class="password-wrap"><input id="senha" name="senha" type="password" placeholder="Pelo menos 8 caracteres" autocomplete="new-password" minlength="8" maxlength="128" required><button type="button" class="toggle-password" data-toggle-password="senha">Mostrar</button></div><small class="field-help">Use pelo menos 8 caracteres.</small></div>
+  <div class="auth-field"><label for="confirmar">Confirme sua senha</label><div class="password-wrap"><input id="confirmar" name="confirmar" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" minlength="8" maxlength="128" required><button type="button" class="toggle-password" data-toggle-password="confirmar">Mostrar</button></div></div>
+  <label class="remember-row terms-row"><input type="checkbox" name="termos" required> <span>Li e aceito os <a href="#termos" onclick="alert('Termos demonstrativos para o projeto acadêmico.'); return false;">termos de uso</a> e a política de privacidade.</span></label>
+  <button class="auth-submit" type="submit">Criar minha conta <span>→</span></button>
+</form>
+<div class="auth-switch">Já tem uma conta? <a href="{{ url_for('login') }}">Entrar</a></div>
+{% endblock %}

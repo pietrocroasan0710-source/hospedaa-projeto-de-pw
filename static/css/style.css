@@ -513,3 +513,7 @@ body { animation: aparecer .6s ease; }
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Ajustes de navegação para as rotas Flask */
+.nav-logout { margin: 0; padding: 0; }
+.nav-logout .btn-entrar { border: 0; cursor: pointer; font-family: inherit; font-size: inherit; }

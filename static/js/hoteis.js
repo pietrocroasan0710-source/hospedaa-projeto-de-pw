@@ -27,7 +27,7 @@ $(function () {
   /* ========== CARREGAR JSON (pega os hotéis do dados.json, nosso "banco de dados" caseiro) ========== */
   HotelCard.esqueletos($('#listaHoteis'), 6);
 
-  $.getJSON('json/dados.json')
+  $.getJSON('/static/json/dados.json')
     .done(function (dados) {
       TODOS = dados.hoteis;
       mostrarResumo();
@@ -38,7 +38,7 @@ $(function () {
       $('#contador').text('');
       $('#listaHoteis').html(
         '<p class="vazio">Não foi possível carregar os hotéis. ' +
-        'Confira o caminho json/dados.json e use o Live Server.</p>'
+        'Confira o caminho json/dados.json e confira se a aplicação Flask está em execução.</p>'
       );
     });
 

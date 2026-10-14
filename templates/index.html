@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hospedaê | Reserve seu hotel</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
   <!-- ========== NAVBAR ========== -->
   <header class="navbar">
-    <a href="index.html" class="logo">🏨 Hospedaê</a>
+    <a href="{{ url_for('home') }}" class="logo">🏨 Hospedaê</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
     <nav id="menu">
-      <a href="index.html" class="ativo">Início</a>
-      <a href="hoteis.html">Hotéis</a>
+      <a href="{{ url_for('home') }}" class="ativo">Início</a>
+      <a href="{{ url_for('hoteis') }}">Hotéis</a>
       <a href="#destinos">Destinos</a>
       <a href="#como-funciona">Como funciona</a>
-      <a href="reservas.html">Minhas reservas</a>
-      <a href="login.html" class="btn-entrar">Entrar</a>
+      <a href="{{ url_for('reservas') }}">Minhas reservas</a>
+      {% if usuario_logado %}<span class="nav-user">Olá, {{ nome_usuario.split()[0] }}</span><form class="nav-logout" action="{{ url_for('sair') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit" class="btn-entrar">Sair</button></form>{% else %}<a href="{{ url_for('login') }}" class="btn-entrar">Entrar</a>{% endif %}
     </nav>
   </header>
 
@@ -68,7 +68,7 @@
     <p class="subtitulo reveal" style="--i:1">Os mais bem avaliados para você começar a sonhar.</p>
     <div class="grade-hoteis" id="listaHoteis"></div>
     <div class="ver-todos reveal">
-      <a href="hoteis.html" class="btn-ver-todos">Ver todos os hotéis →</a>
+      <a href="{{ url_for('hoteis') }}" class="btn-ver-todos">Ver todos os hotéis →</a>
     </div>
   </section>
 
@@ -88,8 +88,8 @@
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="js/cards.js"></script>
-  <script src="js/animacoes.js"></script>
-  <script src="js/main.js"></script>
+  <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/animacoes.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

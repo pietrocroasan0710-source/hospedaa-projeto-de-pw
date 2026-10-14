@@ -52,7 +52,7 @@ var HotelCard = (function () {
     // parâmetros que vão pro link do hotel (o que estiver vazio fica de fora)
     var dados = { id: h.id };
     $.each(opcoes.params || {}, function (k, v) { if (v) { dados[k] = v; } });
-    var link = 'hotel.html?' + $.param(dados);
+    var link = '/hotel?' + $.param(dados);
 
     var tags = $.map(h.comodidades, function (c) { return '<span>' + c + '</span>'; }).join('');
 

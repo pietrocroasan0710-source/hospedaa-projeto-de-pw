@@ -1,0 +1,15 @@
+{% extends 'base_auth.html' %}
+{% block title %}Entrar | Hospedaê{% endblock %}
+{% block form_content %}
+<div class="auth-heading"><span class="auth-kicker">QUE BOM TER VOCÊ AQUI</span><h2>Entre na sua conta</h2><p>Continue de onde sua próxima viagem começa.</p></div>
+<form class="auth-form" method="post" data-validate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="auth-field"><label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" maxlength="254" required value="{{ request.form.get('email', '') }}"></div>
+  <div class="auth-field"><div class="field-label-row"><label for="senha">Senha</label><a href="#ajuda-senha" onclick="alert('Para este projeto acadêmico, fale com o administrador para redefinir a senha.'); return false;">Esqueci minha senha</a></div><div class="password-wrap"><input id="senha" name="senha" type="password" placeholder="Digite sua senha" autocomplete="current-password" required><button type="button" class="toggle-password" data-toggle-password="senha">Mostrar</button></div></div>
+  <label class="remember-row"><input type="checkbox" name="lembrar"> <span>Manter conectado por até 14 dias</span></label>
+  <button class="auth-submit" type="submit">Entrar na conta <span>→</span></button>
+</form>
+<div class="auth-switch">Ainda não tem uma conta? <a href="{{ url_for('cadastro') }}">Criar cadastro</a></div>
+<div class="auth-divider"><span>ACESSO SEGURO</span></div>
+<p class="auth-note">🔒 Suas informações são usadas apenas para acessar sua conta no Hospedaê.</p>
+{% endblock %}
