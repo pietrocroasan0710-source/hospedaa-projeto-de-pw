@@ -161,12 +161,41 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
 @media (max-width: 720px) {
   .menu-toggle { display: block; }
   .navbar nav {
-    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    display: flex; position: absolute; top: 100%; left: 0; right: 0;
     flex-direction: column; gap: 0; background: var(--branco);
     box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+
+    /* ========== ANIMAÇÃO DO MENU (em vez de sumir com display:none, ele fica "escondido de verdade" e a gente anima a entrada) ========== */
+    /* clip-path = uma "cortina": fechado, o menu está todo cortado; aberto, a cortina sobe e ele aparece de cima pra baixo */
+    clip-path: inset(0 0 100% 0);
+    opacity: 0; transform: translateY(-12px);
+    visibility: hidden; pointer-events: none; /* escondido não pode ser clicado, né */
+    transition: clip-path .45s ease, opacity .3s ease, transform .45s ease, visibility 0s .45s;
   }
-  .navbar nav.aberto { display: flex; }
-  .navbar nav a { padding: 14px 5%; width: 100%; }
+  .navbar nav.aberto {
+    clip-path: inset(0 0 -30px 0); /* -30px deixa a sombra aparecer */
+    opacity: 1; transform: none;
+    visibility: visible; pointer-events: auto;
+    transition: clip-path .45s ease, opacity .3s ease, transform .45s ease, visibility 0s;
+  }
+
+  /* os links entram um de cada vez, escorregando da esquerda (efeito cascata) */
+  .navbar nav a {
+    padding: 14px 5%; width: 100%;
+    opacity: 0; transform: translateX(-18px);
+    transition: color .2s, opacity .35s ease, transform .35s ease; /* fechando, some rápido (sem delay) */
+  }
+  .navbar nav.aberto a { opacity: 1; transform: none; }
+  .navbar nav.aberto a:nth-child(1) { transition-delay: 0s, .10s, .10s; }
+  .navbar nav.aberto a:nth-child(2) { transition-delay: 0s, .17s, .17s; }
+  .navbar nav.aberto a:nth-child(3) { transition-delay: 0s, .24s, .24s; }
+  .navbar nav.aberto a:nth-child(4) { transition-delay: 0s, .31s, .31s; }
+  .navbar nav.aberto a:nth-child(5) { transition-delay: 0s, .38s, .38s; }
+  .navbar nav.aberto a:nth-child(6) { transition-delay: 0s, .45s, .45s; }
+
+  /* o ☰ gira meia-volta e vira ✕ (a troca do ícone é feita pelo JS) */
+  .menu-toggle { transition: transform .35s ease; }
+  .menu-toggle.aberto { transform: rotate(180deg); }
   .btn-entrar { border-radius: 0; text-align: center; }
   .legenda-paisagem { display: none; }
 }

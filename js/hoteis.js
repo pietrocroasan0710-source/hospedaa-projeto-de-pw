@@ -17,7 +17,11 @@ $(function () {
   var noites = calcularNoites(busca.checkin, busca.checkout);
 
   /* ========== MENU E PAINEL MOBILE (mobile = celular: clicou no ☰ abre, clicou de novo fecha) ========== */
-  $('#menuToggle').on('click', function () { $('#menu').toggleClass('aberto'); });
+  $('#menuToggle').on('click', function () {
+    var aberto = $('#menu').toggleClass('aberto').hasClass('aberto');
+    // o botão gira (classe .aberto) e troca o ☰ por ✕ quando o menu abre
+    $(this).toggleClass('aberto', aberto).text(aberto ? '✕' : '☰');
+  });
   $('#btnFiltros').on('click', function () { $('#painelFiltros').toggleClass('aberto'); });
 
   /* ========== CARREGAR JSON (pega os hotéis do dados.json, nosso "banco de dados" caseiro) ========== */

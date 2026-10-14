@@ -2,7 +2,9 @@ $(function () {
 
   /* ========== MENU MOBILE (o ☰ que aparece quando a tela é pequena) ========== */
   $('#menuToggle').on('click', function () {
-    $('#menu').toggleClass('aberto');
+    var aberto = $('#menu').toggleClass('aberto').hasClass('aberto');
+    // o botão gira (classe .aberto) e troca o ☰ por ✕ quando o menu abre
+    $(this).toggleClass('aberto', aberto).text(aberto ? '✕' : '☰');
   });
 
   /* ========== CARREGAR DADOS (JSON = arquivo de texto com os dados, tipo uma planilha escrita à mão; precisa do Live Server, senão o navegador não deixa ler) ========== */
