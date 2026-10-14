@@ -1,12 +1,10 @@
-/* ==========================================================
-   animacoes.js — animações compartilhadas por todas as páginas
-   (precisa do jQuery carregado antes)
-   ========================================================== */
+/* ========== ANIMAÇÕES (o tempero do site, sem isso fica tudo parado e sem graça) ========== */
+// atenção: precisa do jQuery carregado antes, senão dá erro e ninguém merece
 $(function () {
 
   var $janela = $(window);
 
-  /* ---------- Navbar encolhe e botão "voltar ao topo" ---------- */
+  /* ========== NAVBAR ENCOLHE + BOTÃO VOLTAR AO TOPO (a navbar emagrece quando você rola, tipo dieta relâmpago) ========== */
   var $topo = $('<button type="button" class="btn-topo" aria-label="Voltar ao topo">↑</button>')
     .appendTo('body')
     .on('click', function () {
@@ -21,7 +19,7 @@ $(function () {
   $janela.on('scroll', aoRolar);
   aoRolar();
 
-  /* ---------- Rolagem suave para links internos (#destinos etc.) ---------- */
+  /* ========== ROLAGEM SUAVE (clicou em "Destinos"? em vez de teleportar, a tela desliza até lá) ========== */
   $('a[href^="#"]').on('click', function (e) {
     var $alvo = $(this.hash);
     if ($alvo.length) {
@@ -30,7 +28,8 @@ $(function () {
     }
   });
 
-  /* ---------- Aparecer ao rolar (elementos com a classe .reveal) ---------- */
+  /* ========== APARECER AO ROLAR (os elementos nascem invisíveis e surgem quando você chega neles, tipo susto do bem) ========== */
+  // IntersectionObserver = um "vigia" do navegador que avisa quando um elemento entrou na tela
   var observador = null;
 
   if ('IntersectionObserver' in window) {
@@ -41,14 +40,13 @@ $(function () {
         $el.addClass('visivel');
         observador.unobserve(item.target);
 
-        // depois que a animação termina, devolve o elemento ao CSS normal
-        // (assim o :hover do card não fica com atraso)
+        // quando a animação acaba, tira a classe: assim o :hover do card não fica com atraso (e atraso irrita)
         setTimeout(function () { $el.removeClass('reveal visivel'); }, 1600);
       });
     }, { threshold: 0.15 });
   }
 
-  // pode ser chamada de novo depois de criar elementos novos
+  // dá pra chamar de novo quando o JS criar cards novos (eles nascem depois que a página carrega)
   function revelar() {
     $('.reveal').each(function () {
       if ($(this).data('observado')) { return; }
@@ -59,7 +57,7 @@ $(function () {
   }
   revelar();
 
-  /* ---------- Efeito de onda (ripple) nos botões ---------- */
+  /* ========== EFEITO DE ONDA NOS BOTÕES (ripple = aquela ondinha de água que nasce onde você clicou) ========== */
   $(document).on('click', '.btn-buscar, .btn-entrar, .btn-limpar, .btn-ver-todos', function (e) {
     var $btn = $(this);
     var caixa = this.getBoundingClientRect();
@@ -75,7 +73,7 @@ $(function () {
       .on('animationend', function () { $(this).remove(); });
   });
 
-  // deixa disponível para os outros scripts
+  // deixa a função "pública" pros outros arquivos usarem (tipo emprestar o caderno)
   window.Animacoes = { revelar: revelar };
 
 });

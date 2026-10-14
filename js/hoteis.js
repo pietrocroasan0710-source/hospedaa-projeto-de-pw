@@ -7,7 +7,7 @@ $(function () {
 
   var params = new URLSearchParams(window.location.search);
 
-  // dados que vieram da busca da home (podem estar vazios)
+  // o que veio da busca da home (fica na URL, depois do "?"; pode estar vazio se a pessoa entrou direto)
   var busca = {
     destino:  params.get('destino')  || '',
     checkin:  params.get('checkin')  || '',
@@ -16,11 +16,11 @@ $(function () {
   };
   var noites = calcularNoites(busca.checkin, busca.checkout);
 
-  /* ===================== MENU E PAINEL MOBILE ===================== */
+  /* ========== MENU E PAINEL MOBILE (mobile = celular: clicou no ☰ abre, clicou de novo fecha) ========== */
   $('#menuToggle').on('click', function () { $('#menu').toggleClass('aberto'); });
   $('#btnFiltros').on('click', function () { $('#painelFiltros').toggleClass('aberto'); });
 
-  /* ===================== CARREGAR JSON ===================== */
+  /* ========== CARREGAR JSON (pega os hotéis do dados.json, nosso "banco de dados" caseiro) ========== */
   HotelCard.esqueletos($('#listaHoteis'), 6);
 
   $.getJSON('json/dados.json')
@@ -38,14 +38,14 @@ $(function () {
       );
     });
 
-  /* ===================== FUNÇÕES AUXILIARES ===================== */
+  /* ========== FUNÇÕES AUXILIARES (a caixa de ferramentas que o resto do código usa) ========== */
   function calcularNoites(entrada, saida) {
     if (!entrada || !saida) return 0;
     var dias = (new Date(saida) - new Date(entrada)) / 86400000;
     return dias > 0 ? Math.round(dias) : 0;
   }
 
-  // tira acentos e põe em minúsculo, para "sao paulo" achar "São Paulo"
+  // tira acento e deixa minúsculo: assim "sao paulo" acha "São Paulo" (ninguém é obrigado a saber acentuar)
   function normalizar(txt) {
     return String(txt).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   }
@@ -55,14 +55,14 @@ $(function () {
     return p[2] + '/' + p[1] + '/' + p[0];
   }
 
-  // devolve uma lista sem repetições
+  // devolve a lista sem repetição (sem isso aparecia "SP" cinco vezes)
   function unicos(lista) {
     var saida = [];
     $.each(lista, function (i, v) { if ($.inArray(v, saida) === -1) saida.push(v); });
     return saida.sort();
   }
 
-  /* ===================== RESUMO DA BUSCA ===================== */
+  /* ========== RESUMO DA BUSCA (mostra os chips com o que veio da home: destino, datas, noites, hóspedes) ========== */
   function mostrarResumo() {
     var $chips = $('#chipsBusca');
     function chip(texto) { $('<span></span>').text(texto).appendTo($chips); }
@@ -76,20 +76,20 @@ $(function () {
     if (!$chips.children().length) chip('Mostrando todos os hotéis');
   }
 
-  /* ===================== CRIAR OS FILTROS A PARTIR DO JSON ===================== */
+  /* ========== CRIAR OS FILTROS (as opções nascem dos dados: colocou hotel novo no JSON, o filtro se atualiza sozinho, mágica!) ========== */
   function prepararFiltros() {
-    // preço: vai até o valor do hotel mais caro (arredondado)
+    // preço: o slider vai até o hotel mais caro, arredondado (pra não ficar número quebrado feio)
     var maior = Math.max.apply(null, TODOS.map(function (h) { return h.preco; }));
     TETO = Math.ceil(maior / 50) * 50;
     $('#filtroPreco').attr({ min: 0, max: TETO }).val(TETO);
     $('#valorPreco').text(moeda(TETO));
 
-    // estados
+    // estados (só os que existem no JSON)
     $.each(unicos(TODOS.map(function (h) { return h.estado; })), function (i, uf) {
       $('<option></option>').val(uf).text(uf).appendTo('#filtroEstado');
     });
 
-    // tipos de hospedagem
+    // tipos de hospedagem (hotel, pousada, resort...)
     $.each(unicos(TODOS.map(function (h) { return h.tipo; })), function (i, t) {
       $('<label></label>')
         .append($('<input type="checkbox" class="chk-tipo">').val(t))
@@ -97,7 +97,7 @@ $(function () {
         .appendTo('#filtroTipos');
     });
 
-    // comodidades
+    // comodidades: junta as de todos os hotéis e tira as repetidas
     var todas = [];
     $.each(TODOS, function (i, h) { todas = todas.concat(h.comodidades); });
     $.each(unicos(todas), function (i, c) {
@@ -107,23 +107,23 @@ $(function () {
         .appendTo('#filtroComodidades');
     });
 
-    // preenche o campo de texto com o destino digitado na home
+    // já escreve aqui o destino digitado na home, pra pessoa não digitar de novo
     $('#filtroTexto').val(busca.destino);
   }
 
-  /* ===================== EVENTOS DOS FILTROS ===================== */
+  /* ========== EVENTOS DOS FILTROS (mexeu em qualquer filtro? a lista atualiza na hora) ========== */
   $('#filtroTexto').on('input', aplicarFiltros);
   $('#filtroPreco').on('input', function () {
     $('#valorPreco').text(moeda(Number($(this).val())));
     aplicarFiltros();
   });
   $('#filtroEstado, #filtroNota, #ordenar').on('change', aplicarFiltros);
-  // checkboxes, "pills" de estrelas e interruptores (inclusive os criados pelo JS)
+  // checkbox = caixinha de marcar. Escutar o painel todo funciona até pras caixinhas que o JS criou depois
   $('#painelFiltros').on('change', 'input[type="checkbox"], input[type="radio"]', aplicarFiltros);
 
   $('#limparFiltros').on('click', function () { limparFiltros(); aplicarFiltros(); });
 
-  // se favoritar/desfavoritar com o filtro "só favoritos" ligado, atualiza a lista
+  // favoritou com o filtro "só favoritos" ligado? a lista atualiza na hora
   $(document).on('favoritos:mudou', function () {
     if ($('#fFav').is(':checked')) { aplicarFiltros(); }
   });
@@ -139,7 +139,7 @@ $(function () {
     $('#valorPreco').text(moeda(TETO));
   }
 
-  // lê o estado atual de todos os filtros
+  // tira uma "foto" de como estão todos os filtros agora
   function lerFiltros() {
     return {
       textoOriginal: $.trim($('#filtroTexto').val()),
@@ -156,7 +156,7 @@ $(function () {
     };
   }
 
-  /* ===================== APLICAR FILTROS ===================== */
+  /* ========== APLICAR FILTROS (aqui que o bicho pega! o hotel precisa passar em TODOS os testes pra continuar na lista) ========== */
   function aplicarFiltros() {
     var f = lerFiltros();
     var favs = HotelCard.lerFavoritos();
@@ -175,7 +175,7 @@ $(function () {
       if (f.pets && !h.pets) return false;
       if (f.favoritos && $.inArray(h.id, favs) === -1) return false;
 
-      // o hotel precisa ter TODAS as comodidades marcadas
+      // precisa ter TODAS as comodidades marcadas (marcou Wi-Fi e Piscina? um dos dois só não vale)
       for (var i = 0; i < f.comodidades.length; i++) {
         if ($.inArray(f.comodidades[i], h.comodidades) === -1) return false;
       }
@@ -191,7 +191,7 @@ $(function () {
     mostrarHoteis(resultado);
   }
 
-  /* ===================== CHIPS DE FILTROS ATIVOS ===================== */
+  /* ========== CHIPS DE FILTROS ATIVOS (as etiquetinhas com × em cima da lista: clicou, o filtro some) ========== */
   function atualizarChips(f) {
     var lista = [];
     function add(tipo, valor, rotulo) { lista.push({ tipo: tipo, valor: valor, rotulo: rotulo }); }
@@ -219,11 +219,11 @@ $(function () {
       $('<button type="button" class="chip-ativo limpar-tudo" data-tipo="tudo">Limpar tudo</button>').appendTo($box);
     }
 
-    // número de filtros no botão do celular
+    // o número de filtros ativos aparece no botão do celular
     $('#badgeFiltros').text(lista.length || '');
   }
 
-  // clicar num chip desliga aquele filtro
+  // clicou num chip? desliga aquele filtro
   $('#filtrosAtivos').on('click', '.chip-ativo', function () {
     var tipo  = $(this).attr('data-tipo');
     var valor = $(this).attr('data-valor');
@@ -232,6 +232,7 @@ $(function () {
       $(seletor).filter(function () { return this.value === valor; }).prop('checked', false);
     }
 
+    // switch = vários "se for isso, faz aquilo" juntos
     switch (tipo) {
       case 'texto':        $('#filtroTexto').val(''); break;
       case 'estado':       $('#filtroEstado').val(''); break;
@@ -248,13 +249,13 @@ $(function () {
     aplicarFiltros();
   });
 
-  /* ===================== MOSTRAR CARDS ===================== */
+  /* ========== MOSTRAR CARDS (desenha os cards na tela, ou avisa que não achou nada) ========== */
   function mostrarHoteis(lista) {
     var $lista = $('#listaHoteis').empty();
     var $contador = $('#contador');
 
     $contador.text(lista.length === 1 ? '1 hotel encontrado' : lista.length + ' hotéis encontrados');
-    // reinicia a animação de "pulsar" do contador
+    // reinicia a animação do contador (truque: ler o offsetWidth força o navegador a "esquecer" a animação anterior)
     $contador.removeClass('pulsar');
     void $contador[0].offsetWidth;
     $contador.addClass('pulsar');
@@ -268,7 +269,7 @@ $(function () {
       return;
     }
 
-    // só os hotéis que acabaram de aparecer ganham a animação de entrada
+    // só os hotéis novos ganham animação de entrada, senão a lista inteira pulava a cada clique (tontura)
     var novos = 0;
     $.each(lista, function (i, h) {
       var ehNovo = !jaMostrados[h.id];

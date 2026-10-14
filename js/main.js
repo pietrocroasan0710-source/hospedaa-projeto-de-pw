@@ -1,12 +1,12 @@
 $(function () {
 
-  /* ===================== MENU MOBILE ===================== */
+  /* ========== MENU MOBILE (o ☰ que aparece quando a tela é pequena) ========== */
   $('#menuToggle').on('click', function () {
     $('#menu').toggleClass('aberto');
   });
 
-  /* ===================== CARREGAR DADOS (JSON) ===================== */
-  HotelCard.esqueletos($('#listaHoteis'), 4);   // placeholders enquanto carrega
+  /* ========== CARREGAR DADOS (JSON = arquivo de texto com os dados, tipo uma planilha escrita à mão; precisa do Live Server, senão o navegador não deixa ler) ========== */
+  HotelCard.esqueletos($('#listaHoteis'), 4);   // esqueletos (retângulos cinza) enquanto carrega
 
   $.getJSON('json/dados.json')
     .done(function (dados) {
@@ -20,11 +20,11 @@ $(function () {
       );
     });
 
-  /* ===================== SLIDESHOW DE PAISAGENS ===================== */
+  /* ========== SLIDESHOW DE PAISAGENS (o fundo que troca de foto sozinho, tipo protetor de tela de TV) ========== */
   function iniciarSlideshow(paisagens) {
     var $box = $('#slideshow');
     var atual = 0;
-    var TEMPO = 8000; // ms entre uma paisagem e outra
+    var TEMPO = 8000; // 8000 ms = 8 segundos entre uma foto e outra (ms = milissegundo, 1000 deles formam 1 segundo)
 
     $.each(paisagens, function (i, p) {
       $('<div class="slide"></div>')
@@ -54,8 +54,8 @@ $(function () {
     }, TEMPO);
   }
 
-  /* ===================== HOTÉIS EM DESTAQUE ===================== */
-  // mostra os 4 hotéis com a melhor nota
+  /* ========== HOTÉIS EM DESTAQUE (o "top 4": os hotéis com a melhor nota) ========== */
+  // pega os 4 melhores: copia a lista (slice), ordena pela nota e corta em 4. A cópia é pra não bagunçar a original
   function mostrarDestaques(hoteis) {
     var melhores = hoteis.slice().sort(function (a, b) { return b.nota - a.nota; }).slice(0, 4);
     var $lista = $('#listaHoteis').empty();
@@ -64,10 +64,10 @@ $(function () {
       $lista.append(HotelCard.criar(h, { indice: i, classe: 'reveal' }));
     });
 
-    Animacoes.revelar();   // ativa a animação "aparecer ao rolar" nos cards novos
+    Animacoes.revelar();   // avisa o animacoes.js que tem card novo pra animar
   }
 
-  /* ===================== FORMULÁRIO DE BUSCA ===================== */
+  /* ========== FORMULÁRIO DE BUSCA (valida o que a pessoa digitou antes de mandar pra próxima página, tipo segurança de balada) ========== */
   var hoje = new Date().toISOString().split('T')[0];
   $('#checkin').attr('min', hoje);
   $('#checkout').attr('min', hoje);
@@ -79,7 +79,7 @@ $(function () {
     }
   });
 
-  // tira o vermelho do campo quando a pessoa começa a corrigir
+  // a pessoa começou a corrigir? o campo para de ficar vermelho (a gente não é carrasco)
   $('#destino, #checkin, #checkout').on('input change', function () {
     $(this).removeClass('invalido');
   });
@@ -88,7 +88,7 @@ $(function () {
     var $form = $('#formBusca');
     $('#erroBusca').text(mensagem);
     $form.removeClass('tremer');
-    void $form[0].offsetWidth;        // reinicia a animação
+    void $form[0].offsetWidth;        // truque pra reiniciar a animação da tremida
     $form.addClass('tremer');
   }
 

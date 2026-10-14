@@ -1,4 +1,4 @@
-/* ========== VARIÁVEIS ========== */
+/* ========== VARIÁVEIS (cores e medidas guardadas num lugar só: mudou aqui, mudou no site inteiro. :root = a "raiz" da página) ========== */
 :root {
   --cor-primaria: #0e8a9a;
   --cor-primaria-escura: #0a6c79;
@@ -22,7 +22,7 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-/* ========== NAVBAR ========== */
+/* ========== NAVBAR (a barra de menu lá de cima, fica fixa pra te acompanhar) ========== */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -42,13 +42,13 @@ a { text-decoration: none; color: inherit; }
 .btn-entrar:hover { background: var(--cor-primaria-escura); }
 .menu-toggle { display: none; background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--cor-texto); }
 
-/* ========== HERO ========== */
+/* ========== HERO (hero = giria de dev pra "capa" do site: aquela área gigante do começo com foto de fundo e a busca) ========== */
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #bfe3ee, #f4e9d8); /* aparece se as imagens não carregarem */
+  background: linear-gradient(135deg, #bfe3ee, #f4e9d8); /* fundo reserva: aparece se as fotos não carregarem */
 }
 
 .slideshow, .slide { position: absolute; inset: 0; }
@@ -60,7 +60,7 @@ a { text-decoration: none; color: inherit; }
 }
 .slide.ativo { opacity: 1; z-index: 2; }
 .slide.saindo { z-index: 1; opacity: 1; }
-/* zoom lento, efeito "tela de TV" */
+/* zoom bem lento na foto, dá ar de documentário */
 .slide.ativo, .slide.saindo { animation: zoomLento 16s linear forwards; }
 @keyframes zoomLento { from { transform: scale(1); } to { transform: scale(1.12); } }
 
@@ -78,7 +78,7 @@ a { text-decoration: none; color: inherit; }
 .hero-conteudo h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.15; margin-bottom: 14px; }
 .hero-conteudo > p { font-size: 1.15rem; margin-bottom: 36px; }
 
-/* ========== BARRA DE BUSCA ========== */
+/* ========== BARRA DE BUSCA (o formulário branquinho em cima das fotos; grid = uma tabela invisível que alinha os campos) ========== */
 .busca {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 1fr auto;
@@ -115,13 +115,13 @@ a { text-decoration: none; color: inherit; }
   transition: opacity .6s;
 }
 
-/* ========== SEÇÕES ========== */
+/* ========== SEÇÕES (os blocos da página, cada um com seu respiro em volta) ========== */
 .secao { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
 .secao-clara { max-width: none; background: var(--branco); }
 .secao h2 { font-size: 2rem; text-align: center; margin-bottom: 6px; }
 .subtitulo { text-align: center; color: var(--cor-texto-suave); margin-bottom: 40px; }
 
-/* ========== CARDS DE HOTEL ========== */
+/* ========== CARDS DE HOTEL (card = aquele retângulo com foto, nome e preço de cada hotel) ========== */
 .grade-hoteis { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
 .card-hotel {
   background: var(--branco); border-radius: var(--raio); overflow: hidden;
@@ -143,16 +143,16 @@ a { text-decoration: none; color: inherit; }
 .preco small { font-weight: 400; color: var(--cor-texto-suave); font-size: .8rem; }
 .carregando, .erro { grid-column: 1 / -1; text-align: center; color: var(--cor-texto-suave); }
 
-/* ========== COMO FUNCIONA ========== */
+/* ========== COMO FUNCIONA (os 3 passinhos: busque, escolha, reserve) ========== */
 .passos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; max-width: 1000px; margin: 40px auto 0; text-align: center; }
 .passo span { font-size: 2.6rem; }
 .passo h3 { margin: 10px 0 6px; }
 .passo p { color: var(--cor-texto-suave); }
 
-/* ========== RODAPÉ ========== */
+/* ========== RODAPÉ (footer = rodapé em inglês, a faixa do fim da página) ========== */
 footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); font-size: .9rem; }
 
-/* ========== RESPONSIVO ========== */
+/* ========== RESPONSIVO (o site se ajeita sozinho no celular; @media = "se a tela for menor que X, faça isso") ========== */
 @media (max-width: 900px) {
   .busca { grid-template-columns: 1fr 1fr; }
   .campo:first-child { grid-column: 1 / -1; }
@@ -172,16 +172,14 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
 }
 
 
-/* ==========================================================
-   PÁGINA DE HOTÉIS (hoteis.html)
-   ========================================================== */
+/* ========== PÁGINA DE HOTÉIS (tudo daqui pra baixo é da hoteis.html) ========== */
 
 
-.pagina-interna { padding-top: 70px; } /* espaço da navbar fixa */
+.pagina-interna { padding-top: 70px; } /* empurra o conteúdo pra baixo, senão a navbar fixa tampa tudo */
 
 .pagina-hoteis { max-width: 1200px; margin: 0 auto; padding: 30px 5% 60px; }
 
-/* ---------- Resumo da busca ---------- */
+/* ========== RESUMO DA BUSCA (chips = aquelas etiquetinhas arredondadas) ========== */
 .resumo-busca { margin-bottom: 26px; }
 .resumo-busca h1 { font-size: 1.8rem; margin-bottom: 10px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
@@ -192,10 +190,10 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
 .link-alterar { color: var(--cor-primaria); font-size: .92rem; font-weight: 500; }
 .link-alterar:hover { text-decoration: underline; }
 
-/* ---------- Layout 2 colunas ---------- */
+/* ========== LAYOUT 2 COLUNAS (filtros de um lado, hotéis do outro) ========== */
 .layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
 
-/* ---------- Filtros ---------- */
+/* ========== FILTROS (a barra lateral; sticky = ela gruda e te segue enquanto você rola) ========== */
 .filtros {
   background: var(--branco); border-radius: var(--raio);
   box-shadow: var(--sombra); padding: 22px;
@@ -232,7 +230,7 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
 }
 .btn-limpar:hover { background: var(--cor-primaria); color: var(--branco); }
 
-/* ---------- Barra de resultados ---------- */
+/* ========== BARRA DE RESULTADOS (o "X hotéis encontrados" + o ordenar) ========== */
 .barra-resultados {
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
@@ -241,27 +239,25 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
 .ordenar { display: flex; align-items: center; gap: 10px; }
 .ordenar label { font-size: .88rem; color: var(--cor-texto-suave); white-space: nowrap; }
 
-/* ---------- Cards (complementos aos do style.css) ---------- */
+/* ========== CARDS EXTRAS (ajustinhos nos cards só pra essa página) ========== */
 .resultados .grade-hoteis { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 .total-estadia { margin-top: 4px; font-size: .85rem; color: var(--cor-texto-suave); }
 .total-estadia strong { color: var(--cor-texto); }
 
-/* ---------- Nenhum resultado ---------- */
+/* ========== NENHUM RESULTADO (a telinha triste de quando nada passa nos filtros) ========== */
 .vazio { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--cor-texto-suave); }
 .vazio span { font-size: 2.6rem; display: block; margin-bottom: 8px; }
 
-/* ---------- Responsivo ---------- */
+/* ========== RESPONSIVO (no celular vira uma coluna só) ========== */
 @media (max-width: 860px) {
   .layout { grid-template-columns: 1fr; }
   .filtros { position: static; }
 }
 
 
-/* ==========================================================
-   ANIMAÇÕES E FILTROS EXTRAS (v2)
-   ========================================================== */
+/* ========== ANIMAÇÕES E FILTROS EXTRAS (v2 = segunda versão, onde o site ganha vida e a gente ganha dor de cabeça) ========== */
 
-/* ---------- Keyframes ---------- */
+/* ========== KEYFRAMES (o "roteiro" da animação: começa assim, termina assado) ========== */
 @keyframes subir     { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @keyframes aparecer  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes pop       { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
@@ -276,15 +272,15 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
   40%, 60% { transform: translateX(6px); }
 }
 
-/* ---------- Página aparece suavemente ---------- */
+/* ========== PÁGINA APARECE SUAVEMENTE (fade-in: a página não pula na sua cara, chega de mansinho) ========== */
 body { animation: aparecer .6s ease; }
 
-/* ---------- Entrada do conteúdo do hero ---------- */
+/* ========== ENTRADA DO HERO (título, texto e busca entram um de cada vez, com delay) ========== */
 .hero-conteudo h1   { animation: subir .9s .15s ease backwards; }
 .hero-conteudo > p  { animation: subir .9s .35s ease backwards; }
 .busca              { animation: subir .9s .55s ease backwards; }
 
-/* ---------- Navbar: encolhe ao rolar + sublinhado animado ---------- */
+/* ========== NAVBAR ANIMADA (emagrece ao rolar e ganha um sublinhado que cresce no hover) ========== */
 .navbar { transition: padding .3s, box-shadow .3s, background .3s; }
 .navbar.rolou {
   padding-top: 8px; padding-bottom: 8px;
@@ -300,7 +296,7 @@ body { animation: aparecer .6s ease; }
 .navbar nav a:not(.btn-entrar):hover::after,
 .navbar nav a.ativo::after { width: 100%; }
 
-/* ---------- Aparecer ao rolar (.reveal) ---------- */
+/* ========== APARECER AO ROLAR (começa invisível e 30px mais embaixo; o JS adiciona a classe .visivel quando o elemento chega na tela) ========== */
 .reveal {
   opacity: 0; transform: translateY(30px);
   transition: opacity .7s ease, transform .7s ease;
@@ -308,12 +304,12 @@ body { animation: aparecer .6s ease; }
 }
 .reveal.visivel { opacity: 1; transform: none; }
 
-/* ---------- Cards de hotel (nova estrutura) ---------- */
+/* ========== CARDS DE HOTEL TURBINADOS (zoom na foto, selinhos e tag de tipo; ::after = "elemento fantasma" criado só pelo CSS) ========== */
 .card-hotel { position: relative; }
 .card-link  { display: block; color: inherit; }
 .card-img {
   overflow: hidden;
-  background-image: linear-gradient(135deg, #cfe6ee, #f1e6d3); /* se a foto falhar */
+  background-image: linear-gradient(135deg, #cfe6ee, #f1e6d3); /* fundo reserva se a foto quebrar */
 }
 .card-foto {
   position: absolute; inset: 0;
@@ -332,13 +328,13 @@ body { animation: aparecer .6s ease; }
 .selos { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .selo { background: #e8f7ee; color: #1f7a45; font-size: .75rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
 
-/* entrada dos cards na página de hotéis (só os que acabaram de aparecer) */
+/* ========== ENTRADA DOS CARDS (só os cards novos fazem a entrada triunfal) ========== */
 .card-hotel.entrada {
   animation: subir .5s ease backwards;
   animation-delay: calc(var(--i, 0) * 70ms);
 }
 
-/* ---------- Coração de favorito ---------- */
+/* ========== CORAÇÃO DE FAVORITO (o ♥ no cantinho do card, dá um "pop" quando clica) ========== */
 .btn-fav {
   position: absolute; top: 12px; left: 12px; z-index: 5;
   width: 36px; height: 36px; border: 0; border-radius: 50%;
@@ -351,7 +347,7 @@ body { animation: aparecer .6s ease; }
 .btn-fav.ativo { color: #e64a6b; }
 .btn-fav.pop   { animation: pop .4s ease; }
 
-/* ---------- Esqueleto (carregando) ---------- */
+/* ========== ESQUELETO (o retângulo cinza com brilho passando: a tela de "loading" bonitinha) ========== */
 .esqueleto {
   position: relative; overflow: hidden; height: 360px;
   border-radius: var(--raio); box-shadow: var(--sombra);
@@ -364,7 +360,7 @@ body { animation: aparecer .6s ease; }
   animation: brilho 1.4s infinite;
 }
 
-/* ---------- Botões: onda ao clicar ---------- */
+/* ========== BOTÕES: ONDA AO CLICAR (o overflow hidden segura a ondinha, senão ela vaza pra fora do botão) ========== */
 .btn-buscar, .btn-entrar, .btn-limpar, .btn-ver-todos { position: relative; overflow: hidden; }
 .ripple {
   position: absolute; border-radius: 50%; pointer-events: none;
@@ -381,11 +377,11 @@ body { animation: aparecer .6s ease; }
 }
 .btn-ver-todos:hover { background: var(--cor-primaria-escura); transform: translateY(-2px); box-shadow: var(--sombra); }
 
-/* ---------- Formulário: campo inválido + tremida ---------- */
+/* ========== FORMULÁRIO: CAMPO INVÁLIDO + TREMIDA (campo vermelho + form tremendo = "ei, preenche direito!") ========== */
 .campo input.invalido { border-color: #d64545; box-shadow: 0 0 0 3px rgba(214, 69, 69, .15); }
 .busca.tremer { animation: tremer .45s; }
 
-/* ---------- Botão voltar ao topo ---------- */
+/* ========== BOTÃO VOLTAR AO TOPO (a setinha ↑ do cantinho, só aparece depois que você rola bastante) ========== */
 .btn-topo {
   position: fixed; right: 22px; bottom: 22px; z-index: 90;
   width: 46px; height: 46px; border: 0; border-radius: 50%;
@@ -397,14 +393,12 @@ body { animation: aparecer .6s ease; }
 .btn-topo.visivel { opacity: 1; transform: none; pointer-events: auto; }
 .btn-topo:hover { background: var(--cor-primaria-escura); }
 
-/* ==========================================================
-   FILTROS NOVOS (hoteis.html)
-   ========================================================== */
+/* ========== FILTROS NOVOS (estrelas, interruptores, chips... o pacote completo) ========== */
 
-/* painel rolável quando tem muita coisa */
+/* ========== PAINEL ROLÁVEL (se tiver filtro demais, ele ganha barra de rolagem própria) ========== */
 .filtros { max-height: calc(100vh - 110px); overflow-y: auto; }
 
-/* pills de estrelas */
+/* ========== PILLS DE ESTRELAS (pill = "pílula", botãozinho todo arredondado; o radio de verdade fica invisível) ========== */
 .pills { display: flex; flex-wrap: wrap; gap: 8px; }
 .pills label { position: relative; cursor: pointer; }
 .pills input { position: absolute; opacity: 0; pointer-events: none; }
@@ -420,7 +414,7 @@ body { animation: aparecer .6s ease; }
 }
 .pills input:focus-visible + span { outline: 2px solid var(--cor-destaque); outline-offset: 2px; }
 
-/* interruptores (liga/desliga) */
+/* ========== INTERRUPTORES (liga/desliga igual ao do celular; o checkbox fica escondido e o .trilho é só o desenho) ========== */
 .interruptores { display: flex; flex-direction: column; gap: 12px; }
 .interruptor { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: .95rem; }
 .interruptor input { position: absolute; opacity: 0; pointer-events: none; }
@@ -437,7 +431,7 @@ body { animation: aparecer .6s ease; }
 .interruptor input:checked + .trilho::after { transform: translateX(18px); }
 .interruptor input:focus-visible + .trilho { outline: 2px solid var(--cor-destaque); outline-offset: 2px; }
 
-/* chips dos filtros ativos */
+/* ========== CHIPS DOS FILTROS ATIVOS (as etiquetas com × em cima da lista) ========== */
 .filtros-ativos { display: flex; flex-wrap: wrap; gap: 8px; }
 .filtros-ativos:not(:empty) { margin-bottom: 16px; }
 .chip-ativo {
@@ -450,11 +444,11 @@ body { animation: aparecer .6s ease; }
 .chip-ativo.limpar-tudo { background: transparent; color: var(--cor-texto-suave); text-decoration: underline; }
 .chip-ativo.limpar-tudo:hover { background: transparent; color: var(--cor-primaria); }
 
-/* contador pulsa quando muda */
+/* ========== CONTADOR (o "X hotéis encontrados" dá uma pulsadinha quando o número muda) ========== */
 #contador { transform-origin: left center; }
 #contador.pulsar { animation: pulsar .4s ease; }
 
-/* botão de filtros do celular */
+/* ========== BOTÃO DE FILTROS DO CELULAR (escondido no PC; no celular abre e fecha o painel) ========== */
 .btn-filtros-mobile {
   display: none; width: 100%; padding: 12px; margin-bottom: 14px;
   border: 1.5px solid var(--cor-primaria); border-radius: 12px;
@@ -469,7 +463,7 @@ body { animation: aparecer .6s ease; }
 
 @media (max-width: 860px) {
   .btn-filtros-mobile { display: block; }
-  /* painel desliza para abrir/fechar */
+  /* no celular o painel desliza pra abrir e fechar, bem chique */
   .filtros {
     max-height: 0; padding-top: 0; padding-bottom: 0;
     overflow: hidden; opacity: 0; box-shadow: none;
@@ -481,7 +475,7 @@ body { animation: aparecer .6s ease; }
   }
 }
 
-/* ---------- Respeita quem pediu menos movimento no sistema ---------- */
+/* ========== MENOS MOVIMENTO (se a pessoa desativou animações no sistema, a gente respeita e desliga tudo: acessibilidade é amor) ========== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;

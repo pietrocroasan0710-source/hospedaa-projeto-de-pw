@@ -1,7 +1,4 @@
-/* ==========================================================
-   cards.js — funções compartilhadas pelos cards de hotel
-   (usado na home e na hoteis.html)
-   ========================================================== */
+/* ========== CARDS DE HOTEL (um arquivo só pra montar o card, assim a home e a hoteis.html usam o mesmo e não repete código) ========== */
 var HotelCard = (function () {
 
   var CHAVE = 'hospedae_favoritos';
@@ -10,7 +7,7 @@ var HotelCard = (function () {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  /* ---------- Favoritos (guardados no localStorage) ---------- */
+  /* ========== FAVORITOS (os corações ♥ ficam no localStorage, a "gavetinha" do navegador: fechou a aba e eles continuam lá) ========== */
   function lerFavoritos() {
     try { return JSON.parse(localStorage.getItem(CHAVE)) || []; }
     catch (e) { return []; }
@@ -18,10 +15,10 @@ var HotelCard = (function () {
 
   function salvarFavoritos(lista) {
     try { localStorage.setItem(CHAVE, JSON.stringify(lista)); }
-    catch (e) { /* sem localStorage, segue sem salvar */ }
+    catch (e) { /* se o navegador não deixar salvar, paciência, a vida segue */ }
   }
 
-  // devolve true se o hotel passou a ser favorito, false se deixou de ser
+  // true = virou favorito, false = levou um "desfavoritar" (dói, mas acontece)
   function alternarFavorito(id) {
     var lista = lerFavoritos();
     var pos = $.inArray(id, lista);
@@ -30,7 +27,7 @@ var HotelCard = (function () {
     return pos === -1;
   }
 
-  // clique no coração (vale para todos os cards, inclusive os criados depois)
+  // clique no coração (vale pra todos os cards, até os criados depois, por isso o $(document))
   $(document).on('click', '.btn-fav', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -45,14 +42,14 @@ var HotelCard = (function () {
     $(document).trigger('favoritos:mudou', [id, agoraFavorito]);
   });
 
-  /* ---------- Monta o HTML de um card ----------
-     opcoes: { indice, noites, params, classe } */
+  /* ========== MONTAR O CARD (aqui o JS escreve o HTML do card em texto, tipo receita de bolo) ========== */
+  // opcoes = ingredientes extras: { indice, noites, params, classe }
   function criar(h, opcoes) {
     opcoes = opcoes || {};
     var indice = opcoes.indice || 0;
     var noites = opcoes.noites || 0;
 
-    // parâmetros que vão para hotel.html (ignora os vazios)
+    // parâmetros que vão pro link do hotel (o que estiver vazio fica de fora)
     var dados = { id: h.id };
     $.each(opcoes.params || {}, function (k, v) { if (v) { dados[k] = v; } });
     var link = 'hotel.html?' + $.param(dados);
@@ -94,7 +91,7 @@ var HotelCard = (function () {
       '</article>';
   }
 
-  /* ---------- Cards "esqueleto" enquanto o JSON carrega ---------- */
+  /* ========== ESQUELETOS (aqueles retângulos cinza que piscam enquanto o JSON carrega, passa a sensação de "já vai!") ========== */
   function esqueletos($lista, quantidade) {
     $lista.empty();
     for (var i = 0; i < quantidade; i++) {
