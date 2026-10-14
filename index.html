@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hospedaaê| Reserve seu hotel</title>
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar">
+    <a href="index.html" class="logo">🏨 Hospedaê</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+    <nav id="menu">
+      <a href="index.html" class="ativo">Início</a>
+      <a href="hoteis.html">Hotéis</a>
+      <a href="#destinos">Destinos</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="reservas.html">Minhas reservas</a>
+      <a href="login.html" class="btn-entrar">Entrar</a>
+    </nav>
+  </header>
+
+  <!-- ========== HERO COM PAISAGENS ========== -->
+  <section class="hero">
+    <div class="slideshow" id="slideshow"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-conteudo">
+      <h1>Encontre o lugar perfeito<br>para a sua próxima viagem</h1>
+      <p>Compare hotéis, escolha as datas e reserve em poucos cliques.</p>
+
+      <form class="busca" id="formBusca" novalidate>
+        <div class="campo">
+          <label for="destino">Destino</label>
+          <input type="text" id="destino" placeholder="Cidade ou hotel" required>
+        </div>
+        <div class="campo">
+          <label for="checkin">Entrada</label>
+          <input type="date" id="checkin" required>
+        </div>
+        <div class="campo">
+          <label for="checkout">Saída</label>
+          <input type="date" id="checkout" required>
+        </div>
+        <div class="campo">
+          <label for="hospedes">Hóspedes</label>
+          <select id="hospedes">
+            <option value="1">1 hóspede</option>
+            <option value="2" selected>2 hóspedes</option>
+            <option value="3">3 hóspedes</option>
+            <option value="4">4 hóspedes</option>
+            <option value="5">5+ hóspedes</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-buscar">Buscar</button>
+        <p class="erro-busca" id="erroBusca"></p>
+      </form>
+    </div>
+
+    <div class="legenda-paisagem" id="legenda">📍 </div>
+  </section>
+
+  <!-- ========== DESTINOS / HOTÉIS EM DESTAQUE ========== -->
+  <section class="secao" id="destinos">
+    <h2>Hotéis em destaque</h2>
+    <p class="subtitulo">Nossa seleção para você começar a sonhar.</p>
+    <div class="grade-hoteis" id="listaHoteis">
+      <p class="carregando">Carregando hotéis...</p>
+    </div>
+  </section>
+
+  <!-- ========== COMO FUNCIONA ========== -->
+  <section class="secao secao-clara" id="como-funciona">
+    <h2>Como funciona</h2>
+    <div class="passos">
+      <div class="passo"><span>🔍</span><h3>1. Busque</h3><p>Informe o destino, as datas e quantos hóspedes.</p></div>
+      <div class="passo"><span>🛏️</span><h3>2. Escolha</h3><p>Compare preços, notas e comodidades.</p></div>
+      <div class="passo"><span>✅</span><h3>3. Reserve</h3><p>Confirme os dados e pronto, reserva feita.</p></div>
+    </div>
+  </section>
+
+  <!-- ========== RODAPÉ ========== -->
+  <footer>
+    <p>© 2026 Hospedaaê - nosso projeto ai </p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
