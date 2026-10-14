@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hotéis | Hospedaê</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="pagina-interna">
+
+  <!-- ========== NAVBAR (igual à da home) ========== -->
+  <header class="navbar">
+    <a href="index.html" class="logo">🏨 Hospedaê</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+    <nav id="menu">
+      <a href="index.html">Início</a>
+      <a href="hoteis.html" class="ativo">Hotéis</a>
+      <a href="index.html#destinos">Destinos</a>
+      <a href="index.html#como-funciona">Como funciona</a>
+      <a href="reservas.html">Minhas reservas</a>
+      <a href="login.html" class="btn-entrar">Entrar</a>
+    </nav>
+  </header>
+
+  <main class="pagina-hoteis">
+
+    <!-- Resumo da busca vinda da home -->
+    <section class="resumo-busca">
+      <h1>Hotéis disponíveis</h1>
+      <div class="chips" id="chipsBusca"></div>
+      <a href="index.html" class="link-alterar">← Alterar busca</a>
+    </section>
+
+    <div class="layout">
+
+      <!-- ========== FILTROS ========== -->
+      <aside class="filtros">
+        <h2>Filtros</h2>
+
+        <div class="filtro">
+          <label for="filtroTexto">Destino ou hotel</label>
+          <input type="text" id="filtroTexto" placeholder="Ex.: Gramado">
+        </div>
+
+        <div class="filtro">
+          <label for="filtroPreco">Preço máximo por noite: <strong id="valorPreco"></strong></label>
+          <input type="range" id="filtroPreco" step="10">
+        </div>
+
+        <div class="filtro">
+          <label for="filtroNota">Nota mínima</label>
+          <select id="filtroNota">
+            <option value="0">Qualquer nota</option>
+            <option value="4">⭐ 4,0 ou mais</option>
+            <option value="4.5">⭐ 4,5 ou mais</option>
+            <option value="4.8">⭐ 4,8 ou mais</option>
+          </select>
+        </div>
+
+        <div class="filtro">
+          <label>Comodidades</label>
+          <div id="filtroComodidades" class="lista-checks"></div>
+        </div>
+
+        <button type="button" id="limparFiltros" class="btn-limpar">Limpar filtros</button>
+      </aside>
+
+      <!-- ========== RESULTADOS ========== -->
+      <section class="resultados">
+        <div class="barra-resultados">
+          <p id="contador">Carregando...</p>
+          <div class="ordenar">
+            <label for="ordenar">Ordenar por</label>
+            <select id="ordenar">
+              <option value="relevancia">Relevância</option>
+              <option value="preco-asc">Menor preço</option>
+              <option value="preco-desc">Maior preço</option>
+              <option value="nota">Melhor avaliação</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grade-hoteis" id="listaHoteis"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 Hospedaê · Projeto acadêmico de Programação Web</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="js/hoteis.js"></script>
+</body>
+</html>

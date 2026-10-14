@@ -170,3 +170,88 @@ footer { text-align: center; padding: 30px 5%; color: var(--cor-texto-suave); fo
   .btn-entrar { border-radius: 0; text-align: center; }
   .legenda-paisagem { display: none; }
 }
+
+
+/* ==========================================================
+   PÁGINA DE HOTÉIS (hoteis.html)
+   ========================================================== */
+
+
+.pagina-interna { padding-top: 70px; } /* espaço da navbar fixa */
+
+.pagina-hoteis { max-width: 1200px; margin: 0 auto; padding: 30px 5% 60px; }
+
+/* ---------- Resumo da busca ---------- */
+.resumo-busca { margin-bottom: 26px; }
+.resumo-busca h1 { font-size: 1.8rem; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.chips span {
+  background: #eaf5f7; color: var(--cor-primaria-escura);
+  padding: 5px 13px; border-radius: 999px; font-size: .88rem; font-weight: 500;
+}
+.link-alterar { color: var(--cor-primaria); font-size: .92rem; font-weight: 500; }
+.link-alterar:hover { text-decoration: underline; }
+
+/* ---------- Layout 2 colunas ---------- */
+.layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
+
+/* ---------- Filtros ---------- */
+.filtros {
+  background: var(--branco); border-radius: var(--raio);
+  box-shadow: var(--sombra); padding: 22px;
+  position: sticky; top: 90px;
+}
+.filtros h2 { font-size: 1.2rem; margin-bottom: 18px; }
+.filtro { margin-bottom: 20px; }
+.filtro > label {
+  display: block; margin-bottom: 7px;
+  font-size: .8rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--cor-texto-suave);
+}
+.filtro > label strong { color: var(--cor-primaria); text-transform: none; letter-spacing: 0; }
+.filtro input[type="text"], .filtro select, .ordenar select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid #dbe5ec;
+  border-radius: 10px; font-size: .95rem; background: var(--branco); color: var(--cor-texto);
+}
+.filtro input[type="text"]:focus, .filtro select:focus, .ordenar select:focus {
+  outline: none; border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(14, 138, 154, .15);
+}
+.filtro input[type="range"] { width: 100%; accent-color: var(--cor-primaria); }
+.lista-checks { display: flex; flex-direction: column; gap: 8px; }
+.lista-checks label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .95rem; cursor: pointer; text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: var(--cor-texto); margin: 0;
+}
+.lista-checks input { accent-color: var(--cor-primaria); width: 16px; height: 16px; }
+.btn-limpar {
+  width: 100%; padding: 10px; border-radius: 10px; cursor: pointer;
+  border: 1.5px solid var(--cor-primaria); background: transparent;
+  color: var(--cor-primaria); font-weight: 600; transition: background .2s, color .2s;
+}
+.btn-limpar:hover { background: var(--cor-primaria); color: var(--branco); }
+
+/* ---------- Barra de resultados ---------- */
+.barra-resultados {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+}
+#contador { font-weight: 600; }
+.ordenar { display: flex; align-items: center; gap: 10px; }
+.ordenar label { font-size: .88rem; color: var(--cor-texto-suave); white-space: nowrap; }
+
+/* ---------- Cards (complementos aos do style.css) ---------- */
+.resultados .grade-hoteis { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.total-estadia { margin-top: 4px; font-size: .85rem; color: var(--cor-texto-suave); }
+.total-estadia strong { color: var(--cor-texto); }
+
+/* ---------- Nenhum resultado ---------- */
+.vazio { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--cor-texto-suave); }
+.vazio span { font-size: 2.6rem; display: block; margin-bottom: 8px; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .filtros { position: static; }
+}
