@@ -4,38 +4,37 @@ import re
 import secrets
 import sqlite3
 from pathlib import Path
-
-from flask import (Flask, abort, flash, g, redirect, render_template, request,
-                   session, url_for)
+from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
 BASE_DIR = Path(__file__).resolve().parent
 
+def carregar_env():
+    caminho = BASE_DIR / '.env'
+    if caminho.exists():
+        for linha in caminho.read_text(encoding='utf-8').splitlines():
+            linha = linha.strip()
+            if linha and not linha.startswith('#') and '=' in linha:
+                chave, valor = linha.split('=', 1)
+                os.environ.setdefault(chave.strip(), valor.strip().strip('\"').strip("'"))
 
-def load_env_file():
-    """Carrega variáveis simples do arquivo .env, sem dependência extra."""
-    env_path = BASE_DIR / '.env'
-    if not env_path.exists():
-        return
-    for line in env_path.read_text(encoding='utf-8').splitlines():
-        line = line.strip()
-        if not line or line.startswith('#') or '=' not in line:
-            continue
-        key, value = line.split('=', 1)
-        os.environ.setdefault(key.strip(), value.strip().strip('\"').strip("'"))
-
-
-load_env_file()
-DB_PATH = Path(os.environ.get('HOSPEDAE_DB', BASE_DIR / 'instance' / 'hospedae.db'))
+carregar_env()
+DATA_PATH = BASE_DIR / 'static' / 'json' / 'dados.json'
+DB_PATH = Path(os.environ.get('GUIA_DB', BASE_DIR / 'instance' / 'guia_global.db'))
 
 app = Flask(__name__)
 app.config.update(
-    SECRET_KEY=os.environ.get('SECRET_KEY', 'dev-troque-esta-chave-antes-de-publicar-7e21a8'),
+    SECRET_KEY=os.environ.get('SECRET_KEY', 'troque-esta-chave-antes-de-publicar'),
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
     SESSION_COOKIE_SECURE=os.environ.get('COOKIE_SECURE', '0') == '1',
     PERMANENT_SESSION_LIFETIME=60 * 60 * 24 * 14,
 )
+
+
+def carregar_dados():
+    with DATA_PATH.open(encoding='utf-8') as arquivo:
+        return json.load(arquivo)
 
 
 def get_db():
@@ -48,7 +47,7 @@ def get_db():
 
 
 @app.teardown_appcontext
-def close_db(error=None):
+def fechar_db(error=None):
     db = g.pop('db', None)
     if db is not None:
         db.close()
@@ -71,32 +70,101 @@ def csrf_token():
         session['_csrf_token'] = secrets.token_urlsafe(32)
     return session['_csrf_token']
 
-
 app.jinja_env.globals['csrf_token'] = csrf_token
 
 
 @app.before_request
-def protect_post_forms():
+def proteger_post():
     if request.method == 'POST':
         token = request.form.get('csrf_token', '')
-        expected = session.get('_csrf_token', '')
-        if not token or not expected or not secrets.compare_digest(token, expected):
+        esperado = session.get('_csrf_token', '')
+        if not token or not esperado or not secrets.compare_digest(token, esperado):
             abort(400, description='O formulário expirou. Atualize a página e tente novamente.')
 
 
 @app.context_processor
-def inject_user():
+def contexto_usuario():
     return {'usuario_logado': session.get('usuario_id'), 'nome_usuario': session.get('nome', '')}
+
+
+def lista_destinos():
+    return carregar_dados()['destinos']
+
+
+def obter_destino(slug):
+    return next((d for d in lista_destinos() if d['slug'] == slug), None)
 
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    dados = carregar_dados()
+    return render_template('index.html', paisagens=dados['paisagens'], destinos=dados['destinos'][:6])
 
 
-@app.route('/hoteis')
-def hoteis():
-    return render_template('hoteis.html')
+@app.route('/destinos')
+def destinos():
+    todos = lista_destinos()
+    busca = request.args.get('q', '').strip().lower()
+    pais = request.args.get('pais', '').strip()
+    categoria = request.args.get('categoria', '').strip()
+    if busca:
+        todos = [d for d in todos if busca in d['nome'].lower() or busca in d['cidade'].lower() or busca in d['pais'].lower() or busca in d['descricao'].lower()]
+    if pais:
+        todos = [d for d in todos if d['pais'] == pais]
+    if categoria:
+        todos = [d for d in todos if d['categoria'] == categoria]
+    dados = carregar_dados()
+    favoritos = session.get('favoritos', [])
+    return render_template('destinos.html', destinos=todos, paises=sorted({d['pais'] for d in dados['destinos']}), categorias=sorted({d['categoria'] for d in dados['destinos']}), busca=busca, pais_selecionado=pais, categoria_selecionada=categoria, favoritos=favoritos)
+
+
+@app.route('/destino/<slug>')
+def detalhe_destino(slug):
+    destino = obter_destino(slug)
+    if not destino:
+        abort(404)
+    return render_template('destino.html', destino=destino, favorito=slug in session.get('favoritos', []), no_roteiro=slug in session.get('roteiro', []))
+
+
+@app.route('/favoritos/<slug>', methods=['POST'])
+def alternar_favorito(slug):
+    if not obter_destino(slug):
+        abort(404)
+    favoritos = session.get('favoritos', [])
+    if slug in favoritos:
+        favoritos.remove(slug)
+        flash('Destino removido dos favoritos.', 'sucesso')
+    else:
+        favoritos.append(slug)
+        flash('Destino salvo nos favoritos!', 'sucesso')
+    session['favoritos'] = favoritos
+    return redirect(request.form.get('next') or url_for('destinos'))
+
+
+@app.route('/favoritos')
+def ver_favoritos():
+    slugs = session.get('favoritos', [])
+    salvos = [d for d in lista_destinos() if d['slug'] in slugs]
+    return render_template('destinos.html', destinos=salvos, paises=[], categorias=[], busca='', pais_selecionado='', categoria_selecionada='', favoritos=slugs, pagina_favoritos=True)
+
+
+@app.route('/roteiro', methods=['GET', 'POST'])
+def roteiro():
+    slugs = session.get('roteiro', [])
+    if request.method == 'POST':
+        slug = request.form.get('slug', '')
+        if not obter_destino(slug):
+            abort(404)
+        if request.form.get('acao') == 'remover':
+            slugs = [s for s in slugs if s != slug]
+            flash('Destino removido do roteiro.', 'sucesso')
+        elif slug not in slugs:
+            slugs.append(slug)
+            flash('Destino adicionado ao seu roteiro!', 'sucesso')
+        session['roteiro'] = slugs
+        return redirect(request.form.get('next') or url_for('roteiro'))
+    itens = [d for d in lista_destinos() if d['slug'] in slugs]
+    return render_template('roteiro.html', destinos=itens)
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -108,11 +176,9 @@ def cadastro():
         email = request.form.get('email', '').strip().lower()
         senha = request.form.get('senha', '')
         confirmar = request.form.get('confirmar', '')
-        termos = request.form.get('termos')
-
         if len(nome) < 2 or len(nome) > 80:
             flash('Informe seu nome (entre 2 e 80 caracteres).', 'erro')
-        elif len(email) > 254 or not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+        elif len(email) > 254 or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+', email):
             flash('Digite um e-mail válido.', 'erro')
         elif len(senha) < 8:
             flash('A senha precisa ter pelo menos 8 caracteres.', 'erro')
@@ -120,18 +186,16 @@ def cadastro():
             flash('A senha deve ter no máximo 128 caracteres.', 'erro')
         elif senha != confirmar:
             flash('As senhas não conferem.', 'erro')
-        elif not termos:
+        elif not request.form.get('termos'):
             flash('Você precisa aceitar os termos para continuar.', 'erro')
         else:
             try:
-                db = get_db()
-                db.execute('INSERT INTO usuarios (nome, email, senha_hash) VALUES (?, ?, ?)',
-                           (nome, email, generate_password_hash(senha)))
-                db.commit()
+                get_db().execute('INSERT INTO usuarios (nome, email, senha_hash) VALUES (?, ?, ?)', (nome, email, generate_password_hash(senha)))
+                get_db().commit()
             except sqlite3.IntegrityError:
                 flash('Este e-mail já está cadastrado. Entre na sua conta.', 'erro')
             else:
-                flash('Conta criada com sucesso! Agora você já pode entrar.', 'sucesso')
+                flash('Conta criada com sucesso! Agora entre na sua conta.', 'sucesso')
                 return redirect(url_for('login'))
     return render_template('cadastro.html')
 
@@ -143,9 +207,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         senha = request.form.get('senha', '')
-        usuario = get_db().execute(
-            'SELECT id, nome, email, senha_hash FROM usuarios WHERE email = ?', (email,)
-        ).fetchone()
+        usuario = get_db().execute('SELECT id, nome, email, senha_hash FROM usuarios WHERE email = ?', (email,)).fetchone()
         if usuario and check_password_hash(usuario['senha_hash'], senha):
             session.clear()
             session['usuario_id'] = usuario['id']
@@ -154,9 +216,7 @@ def login():
             session.permanent = bool(request.form.get('lembrar'))
             flash(f'Bem-vindo(a), {usuario["nome"].split()[0]}!', 'sucesso')
             destino = request.args.get('next', '')
-            if destino.startswith('/') and not destino.startswith('//'):
-                return redirect(destino)
-            return redirect(url_for('home'))
+            return redirect(destino if destino.startswith('/') and not destino.startswith('//') else url_for('home'))
         flash('E-mail ou senha incorretos.', 'erro')
     return render_template('login.html')
 
@@ -168,39 +228,14 @@ def sair():
     return redirect(url_for('home'))
 
 
-@app.route('/hotel')
-def hotel():
-    try:
-        hotel_id = int(request.args.get('id', '0'))
-    except ValueError:
-        abort(404)
-    data_path = BASE_DIR / 'static' / 'json' / 'dados.json'
-    with data_path.open(encoding='utf-8') as f:
-        dados = json.load(f)
-    encontrado = next((h for h in dados['hoteis'] if h['id'] == hotel_id), None)
-    if not encontrado:
-        abort(404)
-    return render_template('hotel.html', hotel=encontrado)
-
-
-@app.route('/reservas')
-def reservas():
-    if not session.get('usuario_id'):
-        flash('Entre na sua conta para acessar suas reservas.', 'aviso')
-        return redirect(url_for('login', next=url_for('reservas')))
-    return render_template('reservas.html')
-
-
 @app.errorhandler(400)
-def bad_request(error):
-    return render_template('erro.html', codigo=400,
-                           mensagem=getattr(error, 'description', 'Não foi possível processar a solicitação.')), 400
+def erro_requisicao(error):
+    return render_template('erro.html', codigo=400, mensagem=getattr(error, 'description', 'Não foi possível processar a solicitação.')), 400
 
 
 @app.errorhandler(404)
-def not_found(error):
-    return render_template('erro.html', codigo=404,
-                           mensagem='Não encontramos essa página ou hospedagem.'), 404
+def pagina_nao_encontrada(error):
+    return render_template('erro.html', codigo=404, mensagem='Não encontramos esse destino ou página.'), 404
 
 
 init_db()

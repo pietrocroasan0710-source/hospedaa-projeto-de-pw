@@ -1,95 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hospedaê | Reserve seu hotel</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-
-  <!-- ========== NAVBAR ========== -->
-  <header class="navbar">
-    <a href="{{ url_for('home') }}" class="logo">🏨 Hospedaê</a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
-    <nav id="menu">
-      <a href="{{ url_for('home') }}" class="ativo">Início</a>
-      <a href="{{ url_for('hoteis') }}">Hotéis</a>
-      <a href="#destinos">Destinos</a>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="{{ url_for('reservas') }}">Minhas reservas</a>
-      {% if usuario_logado %}<span class="nav-user">Olá, {{ nome_usuario.split()[0] }}</span><form class="nav-logout" action="{{ url_for('sair') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit" class="btn-entrar">Sair</button></form>{% else %}<a href="{{ url_for('login') }}" class="btn-entrar">Entrar</a>{% endif %}
-    </nav>
-  </header>
-
-  <!-- ========== HERO COM PAISAGENS ========== -->
-  <section class="hero">
-    <div class="slideshow" id="slideshow"></div>
-    <div class="hero-overlay"></div>
-
-    <div class="hero-conteudo">
-      <h1>Encontre o lugar perfeito<br>para a sua próxima viagem</h1>
-      <p>Compare hotéis, escolha as datas e reserve em poucos cliques.</p>
-
-      <form class="busca" id="formBusca" novalidate>
-        <div class="campo">
-          <label for="destino">Destino</label>
-          <input type="text" id="destino" placeholder="Cidade ou hotel" required>
-        </div>
-        <div class="campo">
-          <label for="checkin">Entrada</label>
-          <input type="date" id="checkin" required>
-        </div>
-        <div class="campo">
-          <label for="checkout">Saída</label>
-          <input type="date" id="checkout" required>
-        </div>
-        <div class="campo">
-          <label for="hospedes">Hóspedes</label>
-          <select id="hospedes">
-            <option value="1">1 hóspede</option>
-            <option value="2" selected>2 hóspedes</option>
-            <option value="3">3 hóspedes</option>
-            <option value="4">4 hóspedes</option>
-            <option value="5">5+ hóspedes</option>
-          </select>
-        </div>
-        <button type="submit" class="btn-buscar">Buscar</button>
-        <p class="erro-busca" id="erroBusca"></p>
-      </form>
-    </div>
-
-    <div class="legenda-paisagem" id="legenda">📍 </div>
-  </section>
-
-  <!-- ========== HOTÉIS EM DESTAQUE ========== -->
-  <section class="secao" id="destinos">
-    <h2 class="reveal">Hotéis em destaque</h2>
-    <p class="subtitulo reveal" style="--i:1">Os mais bem avaliados para você começar a sonhar.</p>
-    <div class="grade-hoteis" id="listaHoteis"></div>
-    <div class="ver-todos reveal">
-      <a href="{{ url_for('hoteis') }}" class="btn-ver-todos">Ver todos os hotéis →</a>
-    </div>
-  </section>
-
-  <!-- ========== COMO FUNCIONA ========== -->
-  <section class="secao secao-clara" id="como-funciona">
-    <h2 class="reveal">Como funciona</h2>
-    <div class="passos">
-      <div class="passo reveal" style="--i:0"><span>🔍</span><h3>1. Busque</h3><p>Informe o destino, as datas e quantos hóspedes.</p></div>
-      <div class="passo reveal" style="--i:1"><span>🛏️</span><h3>2. Escolha</h3><p>Compare preços, notas e comodidades.</p></div>
-      <div class="passo reveal" style="--i:2"><span>✅</span><h3>3. Reserve</h3><p>Confirme os dados e pronto, reserva feita.</p></div>
-    </div>
-  </section>
-
-  <!-- ========== RODAPÉ ========== -->
-  <footer>
-    <p>© 2026 Hospedaê · Projeto acadêmico de Programação Web</p>
-  </footer>
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/animacoes.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-</body>
-</html>
+{% extends 'base.html' %}{% block title %}Mundo Aberto — O mundo espera por você{% endblock %}
+{% block content %}
+<section class="hero"><div class="slideshow" id="slideshow" data-paisagens='{{ paisagens|tojson }}'></div><div class="hero-overlay"></div><div class="hero-conteudo"><p class="eyebrow"><span></span> SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</p><h1>O mundo é grande.<br><em>Vá descobrir.</em></h1><p class="hero-copy">Inspire-se, explore lugares incríveis e monte um roteiro com a sua cara.</p>
+<form class="busca" action="{{ url_for('destinos') }}" method="get"><label class="busca-campo"><span>⌕</span><span class="busca-texto"><small>PARA ONDE?</small><input name="q" placeholder="País, cidade ou experiência"></span></label><button class="btn-buscar" type="submit">Explorar destinos <span>↗</span></button></form>
+<div class="hero-tags"><span>✦ 12 destinos para inspirar</span><span>◉ Do seu jeito, no seu tempo</span></div></div><div class="legenda-paisagem" id="legenda">PAISAGENS PELO MUNDO</div><div class="hero-scroll">ROLE PARA DESCOBRIR <span>↓</span></div></section>
+<section class="section section-intro"><div><p class="eyebrow dark">UM PLANETA DE POSSIBILIDADES</p><h2>Pra onde a curiosidade<br>vai te levar?</h2></div><p class="intro-copy">De cidades cheias de história a paisagens que parecem de outro planeta: encontre ideias para sua próxima aventura em qualquer canto do mundo.</p></section>
+<section class="section destinations-section" id="destinos"><div class="section-heading"><div><p class="eyebrow dark">SELEÇÃO DO MUNDO ABERTO</p><h2>Destinos que inspiram</h2></div><a class="text-link" href="{{ url_for('destinos') }}">Ver todos os destinos <span>↗</span></a></div>
+<div class="destination-grid">{% for destino in destinos %}<article class="destination-card reveal"><a class="card-image" href="{{ url_for('detalhe_destino', slug=destino.slug) }}"><img src="{{ destino.imagem }}" alt="Paisagem de {{ destino.nome }}" loading="lazy"><span class="card-country">{{ destino.emoji }} {{ destino.pais }}</span><span class="card-arrow">↗</span></a><div class="card-info"><p>{{ destino.categoria }} <span>· {{ destino.duracao }}</span></p><h3><a href="{{ url_for('detalhe_destino', slug=destino.slug) }}">{{ destino.nome }}</a></h3><p class="card-description">{{ destino.resumo }}</p></div></article>{% endfor %}</div>
+<div class="center-action"><a class="btn-outline" href="{{ url_for('destinos') }}">Descobrir todos os lugares <span>↗</span></a></div></section>
+<section class="quote-band"><div class="quote-mark">“</div><p>Viajar é descobrir que todo mundo está errado<br>sobre outros países.</p><span>— ALDOUS HUXLEY</span><div class="quote-deco">✳</div></section>
+<section class="section feature-section"><div class="feature-photo"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=85" alt="Lago cercado por montanhas" loading="lazy"><span>ENCONTRE SEU PRÓXIMO HORIZONTE</span></div><div class="feature-copy"><p class="eyebrow dark">SEU MAPA, SUAS REGRAS</p><h2>Sonhou com um lugar?<br><em>Coloque no roteiro.</em></h2><p>Salve os destinos que chamarem sua atenção e reúna tudo em um roteiro de viagem simples, organizado e feito por você.</p><ul><li><span>01</span> Explore destinos de vários continentes</li><li><span>02</span> Guarde seus lugares favoritos</li><li><span>03</span> Monte seu próprio roteiro</li></ul><a class="btn-dark" href="{{ url_for('destinos') }}">Planejar uma aventura <span>↗</span></a></div></section>
+{% endblock %}
